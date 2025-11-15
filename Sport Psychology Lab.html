@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>Juncheng Wu · Motor Learning Lab · 体育心理学测试</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f5f7ff 0, #e5ecff 40%, #f7f7f7 100%);
+      min-height: 100vh;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .app-shell {
+      width: 100%;
+      max-width: 960px;
+      padding: 32px 16px;
+    }
+    .card {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(18px);
+      border-radius: 28px;
+      box-shadow:
+        0 18px 45px rgba(15,23,42,0.12),
+        0 0 0 1px rgba(148,163,184,0.18);
+      padding: 28px 28px 24px;
+      overflow: hidden;
+      position: relative;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand-title {
+      font-size: 20px;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+      color: #111827;
+    }
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+      background: linear-gradient(135deg, #eef2ff, #e0f2fe);
+      color: #1d4ed8;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.25);
+    }
+    .progress-bar {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .progress-bar-inner {
+      position: absolute;
+      inset: 0;
+      transform-origin: left center;
+      transform: scaleX(0);
+      background: linear-gradient(90deg,#4f46e5,#06b6d4);
+      transition: transform 280ms cubic-bezier(0.4,0,0.2,1);
+    }
+    .view {
+      position: relative;
+      min-height: 260px;
+    }
+    .screen {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(14px);
+      transition: opacity 260ms ease, transform 260ms ease;
+    }
+    .screen.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    p.lead {
+      font-size: 14px;
+      color: #4b5563;
+      margin-bottom: 20px;
+    }
+    label {
+      font-size: 13px;
+      color: #374151;
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    input[type="text"] {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 10px 14px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      background: rgba(249,250,251,0.8);
+    }
+    input[type="text"]:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 1px rgba(79,70,229,0.2), 0 0 0 8px rgba(129,140,248,0.18);
+      background: #ffffff;
+    }
+    .hint {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+    .error {
+      font-size: 12px;
+      color: #b91c1c;
+      margin-top: 8px;
+    }
+    button.primary {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      background: linear-gradient(135deg,#4f46e5,#06b6d4);
+      color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      box-shadow:
+        0 12px 25px rgba(37,99,235,0.32),
+        0 0 0 1px rgba(129,140,248,0.18);
+      transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+    }
+    button.primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+      box-shadow:
+        0 16px 32px rgba(37,99,235,0.36),
+        0 0 0 1px rgba(129,140,248,0.22);
+    }
+    button.primary:active {
+      transform: translateY(0);
+      box-shadow:
+        0 8px 18px rgba(37,99,235,0.26),
+        0 0 0 1px rgba(129,140,248,0.22);
+    }
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+    .question-stem {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 14px;
+      line-height: 1.55;
+    }
+    .options {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .option {
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      padding: 9px 12px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      background: rgba(249,250,251,0.85);
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease, transform 100ms ease;
+    }
+    .option:hover {
+      border-color: #c7d2fe;
+      box-shadow: 0 4px 10px rgba(148,163,184,0.3);
+      transform: translateY(-0.5px);
+    }
+    .option.disabled {
+      cursor: default;
+      opacity: 0.96;
+      box-shadow: none;
+      transform: none;
+    }
+    .option-indicator {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 2px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      background: #f9fafb;
+    }
+    .option.correct .option-indicator {
+      border-color: #22c55e;
+      background: #dcfce7;
+      color: #15803d;
+    }
+    .option.incorrect .option-indicator {
+      border-color: #ef4444;
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    .option.correct {
+      border-color: #22c55e;
+      background: #f0fdf4;
+    }
+    .option.incorrect {
+      border-color: #fecaca;
+      background: #fef2f2;
+    }
+    .option-text {
+      flex: 1;
+    }
+    .explanation {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: #f3f4ff;
+      color: #4b5563;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid rgba(148,163,184,0.5);
+      color: #4b5563;
+      background: rgba(248,250,252,0.8);
+    }
+    .timer {
+      font-variant-numeric: tabular-nums;
+    }
+    .taunt {
+      position: absolute;
+      left: 50%;
+      top: 20%;
+      transform: translateX(-50%) translateY(-10px);
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(248,250,252,0.98);
+      border: 1px solid rgba(248,113,113,0.7);
+      box-shadow: 0 12px 30px rgba(248,113,113,0.35);
+      font-size: 13px;
+      color: #b91c1c;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease, transform 220ms ease;
+      z-index: 40;
+      white-space: nowrap;
+    }
+    .taunt.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .footer-note {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #9ca3af;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .link-button {
+      appearance: none;
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      color: #4f46e5;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+    }
+    .result-main {
+      text-align: center;
+      margin-top: 12px;
+      margin-bottom: 18px;
+    }
+    .score-large {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+    .score-tag {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+    .comment-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .result-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .pill-strong {
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      background: #eef2ff;
+      color: #3730a3;
+    }
+    .actions-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 640px) {
+      .card {
+        border-radius: 22px;
+        padding: 22px 18px 18px;
+      }
+      h1 {
+        font-size: 22px;
+      }
+      .score-large {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="card">
+      <header>
+        <div>
+          <div class="brand-title">Juncheng Wu · Sport Psychology Lab</div>
+          <div style="font-size:11px;color:#6b7280;margin-top:4px;">体育心理学题库 · 智能自测系统</div>
+        </div>
+        <div class="badge">
+          <span class="badge-dot"></span>
+          <span>实时评分 · 丝滑切题</span>
+        </div>
+      </header>
+      <div class="progress-bar">
+        <div id="progressInner" class="progress-bar-inner"></div>
+      </div>
+      <div id="tauntBubble" class="taunt"></div>
+      <div class="view">
+        <!-- 登录页面 -->
+        <section id="screen-login" class="screen active">
+          <h1>输入学号开始测试</h1>
+          <p class="lead">本系统收录《体育心理学》选择题 + 判断题全题库，支持智能解析与错题速览。</p>
+          <label for="studentId">学号</label>
+          <input id="studentId" type="text" placeholder="例如2201XXXX" autocomplete="off" />
+          <div class="hint">本测试系统仅允许使用真实学号。</div>
+          <div id="loginError" class="error" style="display:none;"></div>
+          <button class="primary" id="startBtn">
+            <span>进入测试</span>
+            <span style="font-size:16px;">›</span>
+          </button>
+        </section>
+
+        <!-- 答题页面 -->
+        <section id="screen-quiz" class="screen">
+          <div class="question-meta">
+            <span id="qIndexLabel" class="pill">题目 1 / 1</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span id="qTypeLabel" class="pill">单选题</span>
+              <span class="pill timer">本题用时：<span id="qTimer">0.0</span>s</span>
+            </div>
+          </div>
+          <div id="qStem" class="question-stem"></div>
+          <div id="qOptions" class="options"></div>
+          <div id="qExplanation" class="explanation" style="display:none;"></div>
+        </section>
+
+        <!-- 成绩页面 -->
+        <section id="screen-result" class="screen">
+          <h1>本次测试完成</h1>
+          <div class="result-main">
+            <div class="score-large" id="scoreNumber">0</div>
+            <div class="score-tag" id="scoreDetail">正确 0 题 / 共 0 题</div>
+            <div class="comment-text" id="scoreComment">评语占位</div>
+          </div>
+          <div class="result-meta">
+            <div class="pill-strong" id="metaTime">总用时：0.0s</div>
+            <div class="pill-strong" id="metaAccuracy">正确率：0%</div>
+          </div>
+          <div class="actions-row">
+            <button class="primary" id="reviewBtn">错题速览</button>
+            <button class="primary" id="exportBtn">导出成绩单</button>
+          </div>
+        </section>
+
+        <!-- 错题速览页面 -->
+        <section id="screen-review" class="screen">
+          <h1>错题速览</h1>
+          <p class="lead" id="reviewLead">本次测试真猛，一道都没错，溜了溜了。</p>
+          <div id="reviewList" style="margin-top:10px;max-height:360px;overflow:auto;padding-right:4px;"></div>
+          <button class="primary" id="backToResultBtn" style="margin-top:16px;">
+            <span>返回成绩页</span>
+          </button>
+        </section>
+      </div>
+
+      <div class="footer-note">
+        <span>提示：每题作答后立即锁定，无法反悔修改，请慎点选项。</span>
+        <button class="link-button" id="restartBtn">重新开始</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ===================== 题库：选择题 + 判断题（全量） ===================== */
+const questions = [
+{
+  id: 1,
+  type: "single",
+  stem: "世界上第一个运动心理学的实验是由（  ）于 1898年完成的，他研究了“社会促进”现象。",
+  options: ["Triplet", "Griffith", "马约翰", "冯特"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：Triplet。"
+},
+{
+  id: 2,
+  type: "single",
+  stem: "运动心理学创立的标志是（  ）。",
+  options: ["Triplet于 1898年完成第一个实验", "Griffith于 1925年创建了第一个运动心理学实验室", "马约翰于 1926年撰写《体育的迁移价值》", "第一本运动心理学专著出版"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：Griffith于 1925年创建了第一个运动心理学实验室。"
+},
+{
+  id: 3,
+  type: "single",
+  stem: "1926年，我国著名体育教育家（  ）撰写了《体育的迁移价值》一文，这是中国体育心理学最早的专论。",
+  options: ["Triplet", "Griffith", "马约翰", "季浏"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：马约翰。"
+},
+{
+  id: 4,
+  type: "single",
+  stem: "体育心理学研究的侧重点是（  ）。",
+  options: ["体育教学过程中的心理现象", "体育锻炼过程中的心理现象", "竞技运动训练和比赛中的心理现象", "参与体育锻炼的前因和心理效应"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：体育教学过程中的心理现象。"
+},
+{
+  id: 5,
+  type: "single",
+  stem: "锻炼心理学研究的侧重点是（  ）。",
+  options: ["体育教学过程中的心理现象", "体育锻炼过程中的心理现象", "竞技运动训练和比赛中的心理现象", "提高教与学的效果"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：体育锻炼过程中的心理现象。"
+},
+{
+  id: 6,
+  type: "single",
+  stem: "运动心理学研究的侧重点是（  ）。",
+  options: ["体育教学过程中的心理现象", "体育锻炼过程中的心理现象", "竞技运动训练和比赛中的心理现象", "参与体育锻炼的前因和心理效应"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：竞技运动训练和比赛中的心理现象。"
+},
+{
+  id: 7,
+  type: "single",
+  stem: "体育心理学研究方法趋向综合化表现为（  ）、（ ）、研究思路程序化和研究范式生态化。",
+  options: ["研究手段综合化、研究范式实验室化", "研究工具中国化、研究对象单一化", "研究手段单一化、研究工具中国化", "研究手段综合化、研究工具中国化"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：研究手段综合化、研究工具中国化。"
+},
+{
+  id: 8,
+  type: "single",
+  stem: "下列哪项不属于体育教学中目标设置的作用？（  ）",
+  options: ["将学生注意和行为指向体育活动任务上", "激发学生的学习动机", "降低学生对体育活动的坚持性", "让学生长时间地坚持参与体育活动"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：降低学生对体育活动的坚持性。"
+},
+{
+  id: 9,
+  type: "single",
+  stem: "通过学习新的技能，控制新的环境来发展自己的能力，这种目标定向是（  ）。",
+  options: ["学习目标定向", "成绩目标定向", "内部动机", "直接兴趣"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：学习目标定向。"
+},
+{
+  id: 10,
+  type: "single",
+  stem: "通过寻求有利的评价和避免负面的评价来显示和证明自己的能力，这种目标定向是（  ）。",
+  options: ["学习目标定向", "成绩目标定向", "外部动机", "间接兴趣"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：成绩目标定向。"
+},
+{
+  id: 11,
+  type: "single",
+  stem: "目标定向可以分为（  ）和（  ）两种。",
+  options: ["内部动机、外部动机", "直接兴趣、间接兴趣", "学习目标定向、成绩目标定向", "物质兴趣、精神兴趣"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：学习目标定向、成绩目标定向。"
+},
+{
+  id: 12,
+  type: "single",
+  stem: "由体育活动过程本身引起的兴趣是（  ）。",
+  options: ["直接兴趣", "间接兴趣", "内部动机", "乐趣"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：直接兴趣。"
+},
+{
+  id: 13,
+  type: "single",
+  stem: "由体育活动的目的或结果引起的兴趣是（  ）。",
+  options: ["直接兴趣", "间接兴趣", "外部动机", "物质兴趣"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：间接兴趣。"
+},
+{
+  id: 14,
+  type: "single",
+  stem: "由被动的、观赏性的兴趣转化为主动参与的兴趣，由不太稳定的愉悦倾向发展成为比较稳定的热爱倾向，表明兴趣发展到了（  ）水平。",
+  options: ["倾向性", "稳定性", "乐趣", "效能"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：乐趣。"
+},
+{
+  id: 15,
+  type: "single",
+  stem: "当学生想要运动的愿望达到一定水平，就成为心理动力推动他们行动起来。这是对运动动机（  ）功能的阐释。",
+  options: ["发动", "强化", "维持", "选择"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：发动。"
+},
+{
+  id: 16,
+  type: "single",
+  stem: "运动动机决定着学生体育参与行为的努力程度。这是对运动动机（  ）功能的阐释。",
+  options: ["发动", "强化", "维持", "选择"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：强化。"
+},
+{
+  id: 17,
+  type: "single",
+  stem: "学生的体育活动愿望强烈，运动持续的时间就可能较长。这是对运动动机（  ）功能的阐释。",
+  options: ["发动", "强化", "维持", "选择"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：维持。"
+},
+{
+  id: 18,
+  type: "single",
+  stem: "运动兴趣持续时间的长短指的是运动兴趣的（  ）。",
+  options: ["倾向性品质", "稳定性品质", "效能品质", "广泛性品质"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：稳定性品质。"
+},
+{
+  id: 19,
+  type: "single",
+  stem: "运动兴趣是指向一定的体育项目或体育事件指的是运动兴趣的（  ）。",
+  options: ["倾向性品质", "稳定性品质", "效能品质", "广泛性品质"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：倾向性品质。"
+},
+{
+  id: 20,
+  type: "single",
+  stem: "关注运动兴趣对体育活动的推动效果，这是指运动兴趣的（  ）。",
+  options: ["倾向性品质", "稳定性品质", "效能品质", "广泛性品质"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：效能品质。"
+},
+{
+  id: 21,
+  type: "single",
+  stem: "锻炼者参与体育锻炼是出于自身好奇或好胜心理，这种动机是（  ）。",
+  options: ["内部动机", "外部动机", "间接动机", "学习目标定向"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：内部动机。"
+},
+{
+  id: 22,
+  type: "single",
+  stem: "当锻炼者参与锻炼活动的心理动因指向活动内容，这种动机是（  ）。",
+  options: ["间接动机", "内部动机", "直接动机", "外部动机"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：直接动机。"
+},
+{
+  id: 23,
+  type: "single",
+  stem: "由学生自身以外的诱因引发的体育学习动机，如为了获得教师的表扬、同学的赏识等，这样的动机属于（  ）。",
+  options: ["内部动机、直接动机", "外部动机、间接动机", "内部动机、间接动机", "外部动机、直接动机"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：外部动机、间接动机。"
+},
+{
+  id: 24,
+  type: "single",
+  stem: "运动兴趣的品质包括（  ）、（ ）、稳定性和效能。",
+  options: ["直接性、间接性", "物质性、精神性", "内部性、外部性", "倾向性、广泛性"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：倾向性、广泛性。"
+},
+{
+  id: 25,
+  type: "single",
+  stem: "根据运动兴趣的内容，可以分为（  ）和（  ）。",
+  options: ["物质兴趣、精神兴趣", "直接兴趣、间接兴趣", "广泛兴趣、中心兴趣", "内部动机、外部动机"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：物质兴趣、精神兴趣。"
+},
+{
+  id: 26,
+  type: "single",
+  stem: "根据运动兴趣的倾向性，可以分为（  ）和（  ）。",
+  options: ["物质兴趣、精神兴趣", "直接兴趣、间接兴趣", "广泛兴趣、中心兴趣", "内部动机、外部动机"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：直接兴趣、间接兴趣。"
+},
+{
+  id: 27,
+  type: "single",
+  stem: "根据运动兴趣的广泛性，可以分为（  ）和（  ）。",
+  options: ["物质兴趣、精神兴趣", "直接兴趣、间接兴趣", "广泛兴趣、中心兴趣", "内部动机、外部动机"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：广泛兴趣、中心兴趣。"
+},
+{
+  id: 28,
+  type: "single",
+  stem: "运动动机的功能包括（  ）、（ ）、强化功能和维持功能。",
+  options: ["发动功能、选择功能", "倾向功能、广泛功能", "稳定功能、效能功能", "物质功能、精神功能"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：发动功能、选择功能。"
+},
+{
+  id: 29,
+  type: "single",
+  stem: "强调健康的个人信念是体育锻炼行为的核心预测指标的理论是（  ）。",
+  options: ["健康信念模型", "社会认知理论", "合理行为理论", "跨理论模型"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：健康信念模型。"
+},
+{
+  id: 30,
+  type: "single",
+  stem: "自我效能是预测体育行为的重要变量，这种活动行为理论称为（  ）。",
+  options: ["健康信念模型", "社会认知理论", "合理行为理论", "跨理论模型"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：社会认知理论。"
+},
+{
+  id: 31,
+  type: "single",
+  stem: "意图是锻炼行为预测的最佳因子，这种活动行为理论称为（  ）。",
+  options: ["健康信念模型", "社会认知理论", "合理行为理论", "跨理论模型"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：合理行为理论。"
+},
+{
+  id: 32,
+  type: "single",
+  stem: "体育活动对情绪的影响表现为（  ）、（ ）、提高主观幸福感效能和获得特殊情绪体验。",
+  options: ["增加抑郁效能、增加焦虑效能", "抗抑郁效能、增加焦虑效能", "降低抑郁效能、降低焦虑效能", "抗抑郁效能、降低焦虑效能"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：抗抑郁效能、降低焦虑效能。"
+},
+{
+  id: 33,
+  type: "single",
+  stem: "体育活动对认知功能的影响主要表现在促进（  ）认知功能的发展，延缓或预防（  ）认知功能的衰退。",
+  options: ["青少年和儿童、中老年人", "中老年人、青少年和儿童", "青少年和儿童、青少年和儿童", "中老年人、中老年人"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：青少年和儿童、中老年人。"
+},
+{
+  id: 34,
+  type: "single",
+  stem: "跨理论模型主要包括变化阶段、变化过程、（  ）和（  ）四因素。",
+  options: ["意图、个人信念", "合理行为、社会认知", "决策平衡、自我效能", "前意向、思考阶段"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：决策平衡、自我效能。"
+},
+{
+  id: 35,
+  type: "single",
+  stem: "跨理论模型认为锻炼行为共分为5个不同阶段，即前意向阶段、思考阶段、准备阶段、（  ）和（  ）。",
+  options: ["决策阶段、效能阶段", "行动阶段、维持阶段", "否认阶段、愤怒阶段", "认知阶段、许愿阶段"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：行动阶段、维持阶段。"
+},
+{
+  id: 36,
+  type: "single",
+  stem: "一般来说，运动技能越复杂，其适宜的唤醒水平要求（  ）。",
+  options: ["越低", "越高", "不变", "忽高忽低"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：越低。"
+},
+{
+  id: 37,
+  type: "single",
+  stem: "当认知状态焦虑增加时，操作活动水平相应（  ）。",
+  options: ["升高", "降低", "不变", "无法确定"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：降低。"
+},
+{
+  id: 38,
+  type: "single",
+  stem: "在技能学习的初期应尽量消除不必要的压力，使学生在比较低的唤醒水平条件下降低错误动作。这是（  ）理论的提示。",
+  options: ["倒U形理论", "认知焦虑理论", "驱力理论", "状态焦虑理论"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：驱力理论。"
+},
+{
+  id: 39,
+  type: "single",
+  stem: "人类和动物在经历和体验某种过度情绪时产生的那种（  ）和（  ）的过程称之为应激。",
+  options: ["心理、生理", "认知、行为", "躯体、状态", "脑电、植物性"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：心理、生理。"
+},
+{
+  id: 40,
+  type: "single",
+  stem: "唤醒有三种表现，即脑电唤醒、（  ）和（  ）。",
+  options: ["心理唤醒、生理唤醒", "认知唤醒、躯体唤醒", "特质唤醒、状态唤醒", "行为唤醒、植物性唤醒"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：行为唤醒、植物性唤醒。"
+},
+{
+  id: 41,
+  type: "single",
+  stem: "随着焦虑研究的深入和细化，人们把焦虑分为（  ）和（  ）。",
+  options: ["特质焦虑、状态焦虑", "认知焦虑、躯体焦虑", "心理焦虑、生理焦虑", "行为焦虑、植物性焦虑"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：特质焦虑、状态焦虑。"
+},
+{
+  id: 42,
+  type: "single",
+  stem: "马腾斯于 1982年提出将竞赛焦虑分为（  ）、（  ）和状态自信心三个方面。",
+  options: ["特质焦虑、状态焦虑", "认知状态焦虑、躯体状态焦虑", "心理焦虑、生理焦虑", "行为唤醒、植物性唤醒"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：认知状态焦虑、躯体状态焦虑。"
+},
+{
+  id: 43,
+  type: "single",
+  stem: "体育教学中强调学生自己确立学习目标，安排学习进程，进行自我调控的学习方法是（  ）。",
+  options: ["自主学习法", "探究学习法", "合作学习法", "接受学习法"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：自主学习法。"
+},
+{
+  id: 44,
+  type: "single",
+  stem: "（  ）特别有利于学生探究精神和创造能力的发展。",
+  options: ["自主学习法", "探究学习法", "合作学习法", "精加工策略"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：探究学习法。"
+},
+{
+  id: 45,
+  type: "single",
+  stem: "（  ）有助于培养学生的合作精神、团队意识和集体观念。",
+  options: ["自主学习法", "探究学习法", "合作学习法", "自我激励法"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：合作学习法。"
+},
+{
+  id: 46,
+  type: "single",
+  stem: "和谐的课堂心理气氛能使学生大脑皮质处于兴奋状态，增强练习动作的积极性。这体现体育课堂心理气氛的（  ）功能。",
+  options: ["效应", "信号", "教育", "激励"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：效应。"
+},
+{
+  id: 47,
+  type: "single",
+  stem: "和谐型课堂气氛能传递出学生对课堂教学、师生关系的满意程度。这是体育课堂心理气氛的（  ）功能。",
+  options: ["效应", "信号", "教育", "评价"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：信号。"
+},
+{
+  id: 48,
+  type: "single",
+  stem: "和谐的课堂心理气氛能造成一种感染力强，催人上进的教学情境，使学生受到感染和熏陶，产生思想上的共鸣。这是体育课堂心理气氛的（  ）功能。",
+  options: ["效应", "信号", "教育", "感染"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：教育。"
+},
+{
+  id: 49,
+  type: "single",
+  stem: "在体育学习中碰到困难、挫折时，可以对自己说“不要灰心，坚持到底”。这是（  ）调控。",
+  options: ["自我激励", "自我暗示", "对学习材料的调控", "自我放弃"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：自我激励。"
+},
+{
+  id: 50,
+  type: "single",
+  stem: "当面对难度较大动作胆怯而不敢练，可以在心里对自己说“大胆些”。这是（  ）调控。",
+  options: ["自我激励", "自我暗示", "自我表扬", "自我批评"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：自我暗示。"
+},
+{
+  id: 51,
+  type: "single",
+  stem: "体育课堂学习过程的心理学评价内容不包括（  ）。",
+  options: ["体育学习态度", "情意表现", "交往能力与合作精神", "运动技能掌握程度"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：运动技能掌握程度。"
+},
+{
+  id: 52,
+  type: "single",
+  stem: "体育教学内容选择的依据不包括（  ）。",
+  options: ["体育课程的目标体系", "学校的具体条件", "教师的个人兴趣", "学生身心发展特征"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：教师的个人兴趣。"
+},
+{
+  id: 53,
+  type: "single",
+  stem: "（  ）是任务指向的自我调控。",
+  options: ["对学习材料的调控", "自我激励", "自我暗示", "对情绪的调控"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：对学习材料的调控。"
+},
+{
+  id: 54,
+  type: "single",
+  stem: "下列哪项属于体育学习的精加工策略？（  ）",
+  options: ["想象、放松、激励", "口述、答疑、做笔记", "注意、练习、调控", "制订计划、选择方法"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：口述、答疑、做笔记。"
+},
+{
+  id: 55,
+  type: "single",
+  stem: "在运动技能的学习过程中必须达到“过度学习”程度。对体育学习重复量要达到（  ）的程度。",
+  options: ["50%", "100%", "150%", "200%"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：150%。"
+},
+{
+  id: 56,
+  type: "single",
+  stem: "制订体育学习计划，选择合适的体育学习方法，这属于（  ）策略。",
+  options: ["认知-运动", "认知-调控", "精加工", "练习"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：认知-调控。"
+},
+{
+  id: 57,
+  type: "single",
+  stem: "学生在体育活动过程中能及时发现问题、改进学习策略和提高学习成绩的能力是（  ）。",
+  options: ["自我调节能力", "体育认识能力", "身体运动能力", "交往能力"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：自我调节能力。"
+},
+{
+  id: 58,
+  type: "single",
+  stem: "体育学习策略包括体育学习（  ）和（  ）。",
+  options: ["练习策略、精加工策略", "任务指向策略、自我指向策略", "认知-运动策略、认知-调控策略", "自主学习策略、合作学习策略"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：认知-运动策略、认知-调控策略。"
+},
+{
+  id: 59,
+  type: "single",
+  stem: "体育学习认知-运动策略主要包括选择性注意策略、（  ）和（  ）。",
+  options: ["练习策略、精加工策略", "认知-调控策略、任务指向策略", "自我激励、自我暗示", "自主学习、合作学习"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：练习策略、精加工策略。"
+},
+{
+  id: 60,
+  type: "single",
+  stem: "体育学习认知-调控策略可分为（  ）的自我调控和（  ）的自我调控。",
+  options: ["认知-运动、认知-调控", "任务指向、自我指向", "练习、精加工", "内部、外部"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：任务指向、自我指向。"
+},
+{
+  id: 61,
+  type: "single",
+  stem: "心理运动能力包括（  ）等。",
+  options: ["操作的准确度、四肢协调性、定向反应", "体育认识能力、身体运动能力", "自我锻炼能力、自我评价能力", "抑郁质、多血质"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：操作的准确度、四肢协调性、定向反应。"
+},
+{
+  id: 62,
+  type: "single",
+  stem: "体育教学中（  ）学生不能过度批评。",
+  options: ["多血质", "抑郁质", "胆汁质", "粘液质"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：抑郁质。"
+},
+{
+  id: 63,
+  type: "single",
+  stem: "（  ）属于体育锻炼者的非智力因素。",
+  options: ["体育认识能力", "身体运动能力", "个性倾向性", "心理运动能力"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：个性倾向性。"
+},
+{
+  id: 64,
+  type: "single",
+  stem: "学生体育能力可概括为（  ）、（  ）、自我锻炼与评价能力和自我调节能力四个要素。",
+  options: ["操作准确度、四肢协调性", "个性倾向性、非智力因素", "认知能力、情感能力", "体育认识能力、身体运动能力"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：体育认识能力、身体运动能力。"
+},
+{
+  id: 65,
+  type: "single",
+  stem: "运动员损伤后，当处于（  ）心理阶段时才可以进行心理康复。",
+  options: ["否认阶段", "愤怒阶段", "抑郁阶段", "承认阶段"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：承认阶段。"
+},
+{
+  id: 66,
+  type: "single",
+  stem: "想到别的运动员比我伤得更重，心理就能得到某种宽慰，这种心理技能称为（  ）。",
+  options: ["酸葡萄效应", "投射", "升华", "积极思维"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：投射。"
+},
+{
+  id: 67,
+  type: "single",
+  stem: "在心理斗争过程中以“歪曲事实”为代价去换得一种“心理平衡”，这种心理技能称为（  ）。",
+  options: ["酸葡萄效应", "投射", "升华", "积极思维"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：酸葡萄效应。"
+},
+{
+  id: 68,
+  type: "single",
+  stem: "运动损伤心理评估的内容不包括（  ）。",
+  options: ["自我概念评估", "情绪和情感评估", "损伤程度评估", "个性评估"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：损伤程度评估。"
+},
+{
+  id: 69,
+  type: "single",
+  stem: "运动员受伤后的心理反应大体可分为5个阶段：即（  ）、（  ）、许愿阶段、抑郁阶段和承认阶段。",
+  options: ["思考阶段、准备阶段", "行动阶段、维持阶段", "认知阶段、躯体阶段", "否认阶段、愤怒阶段"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：否认阶段、愤怒阶段。"
+},
+{
+  id: 70,
+  type: "single",
+  stem: "运动损伤常用的心理评估手段有（  ）、会谈法、（  ）和医学检测法。",
+  options: ["观察法、心理测量法", "实验法、问卷法", "访谈法、个案法", "手术法、药物法"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：观察法、心理测量法。"
+},
+{
+  id: 71,
+  type: "single",
+  stem: "当出现消极思维时，运动损伤者应采用“思维中止”等策略紧急叫停的心理康复方法是（  ）。",
+  options: ["升华", "表象训练", "积极思维", "酸葡萄效应"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：积极思维。"
+},
+{
+  id: 72,
+  type: "single",
+  stem: "将应激作为创造活动的动力，化悲痛为力量的心理应对技能是（  ）。",
+  options: ["升华", "积极思维", "表象训练", "投射"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：升华。"
+},
+{
+  id: 73,
+  type: "single",
+  stem: "运动员因为运动损伤被迫在一定时间内离开运动场是很难过的事，但与其自怨自艾不如通过（  ）去练习动作。",
+  options: ["积极思维", "表象训练", "升华", "酸葡萄效应"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：表象训练。"
+},
+{
+  id: 74,
+  type: "single",
+  stem: "影响运动损伤发生的心理因素包括（  ）、（  ）、人格和其他因素。",
+  options: ["否认、愤怒", "观察法、会谈法", "认知焦虑、躯体焦虑", "应激源、应对资源"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：应激源、应对资源。"
+},
+{
+  id: 75,
+  type: "single",
+  stem: "每一个团体成员对运动队作为一个整体，围绕团体任务的相似性、亲近性的感知称为（  ）。",
+  options: ["团体任务一致性", "团体社交一致性", "任务凝聚力", "社交凝聚力"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：团体任务一致性。"
+},
+{
+  id: 76,
+  type: "single",
+  stem: "（  ）指每一个团体成员对运动队作为一个整体，围绕团体社交的相似性、亲近性的感知。",
+  options: ["团体任务一致性", "团体社交一致性", "任务凝聚力", "社交凝聚力"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：团体社交一致性。"
+},
+{
+  id: 77,
+  type: "single",
+  stem: "（  ）的团体规模有助于团体任务凝聚力和社交凝聚力的发展。",
+  options: ["较小", "较大", "适当", "固定"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：适当。"
+},
+{
+  id: 78,
+  type: "single",
+  stem: "（  ）指在一个团体内的个体由于动机水平的下降，在集体工作时不像独自工作时那样付出100%的努力。",
+  options: ["社会性懈怠", "社会促进", "团体凝聚力", "任务一致性"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：社会性懈怠。"
+},
+{
+  id: 79,
+  type: "single",
+  stem: "当团体规模不断扩大，队员的动机逐渐下降，就会产生（  ），从而降低活动效率。",
+  options: ["社交凝聚力", "社会性懈怠", "任务凝聚力", "社会促进"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：社会性懈怠。"
+},
+{
+  id: 80,
+  type: "single",
+  stem: "团体规模越大，凝聚力会（  ）。",
+  options: ["越大", "越小", "不变", "忽大忽小"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：越小。"
+},
+{
+  id: 81,
+  type: "single",
+  stem: "在影响体育团体凝聚力的因素中，（  ）有助于运动员明确自己在运动队中所要担负的责任以及扮演的角色。",
+  options: ["领导行为", "团体目标", "合约责任", "个体满意感"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：合约责任。"
+},
+{
+  id: 82,
+  type: "single",
+  stem: "心理学家将团体凝聚力分为（  ）和（  ）两类。",
+  options: ["任务凝聚力、社交凝聚力", "团体任务一致性、团体社交一致性", "互动项目、共动项目", "内部凝聚力、外部凝聚力"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：任务凝聚力、社交凝聚力。"
+},
+{
+  id: 83,
+  type: "single",
+  stem: "领导因素主要包括（  ）和（  ）的决策风格。",
+  options: ["团体目标、合约责任", "领导行为、领导者", "任务凝聚力、社交凝聚力", "个体满意感、团队规模"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：领导行为、领导者。"
+},
+{
+  id: 84,
+  type: "single",
+  stem: "需要紧密团结合作才能获得优异成绩的体育项目称为（  ）。",
+  options: ["共动项目", "独立项目", "合作项目", "互动项目"],
+  correctIndex: 3,
+  explanation: "正确答案是D项：互动项目。"
+},
+{
+  id: 85,
+  type: "single",
+  stem: "很少需要成员间交互作用的体育运动项目是（  ）。",
+  options: ["共动项目", "互动项目", "独立项目", "社交项目"],
+  correctIndex: 0,
+  explanation: "正确答案是A项：共动项目。"
+},
+{
+  id: 86,
+  type: "single",
+  stem: "（  ）成员对归属的依赖较高。",
+  options: ["共动项目", "互动项目", "任务项目", "社交项目"],
+  correctIndex: 1,
+  explanation: "正确答案是B项：互动项目。"
+},
+{
+  id: 87,
+  type: "single",
+  stem: "团体因素对团体凝聚力的影响主要有运动项目、团体状况和（  ）。",
+  options: ["领导行为", "合约责任", "团体目标", "个体满意感"],
+  correctIndex: 2,
+  explanation: "正确答案是C项：团体目标。"
+},
+
+/* 下面是判断题（全部） */
+{
+  id: 88,
+  type: "tf",
+  stem: "体育心理学的主要研究目的是提高教与学的效果。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 89,
+  type: "tf",
+  stem: "运动心理学的主要研究目的是提高教与学的效果。",
+  options: ["对","错"],
+  correctIndex: 1,
+  explanation: "本题说法为“错”。"
+},
+{
+  id: 90,
+  type: "tf",
+  stem: "锻炼心理学的主要研究目的是参与体育锻炼的前因和心理效应。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 91,
+  type: "tf",
+  stem: "体育心理学是研究人的认知、情感和行为的科学。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 92,
+  type: "tf",
+  stem: "目标定向不是具体要达到的行为的数量标准，而是个体内心中追求的成就取向。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 93,
+  type: "tf",
+  stem: "研究表明，设置具体的、可测量的目标会比仅仅设置一般性目标（如“尽最大努力”）产生更大的动机。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 94,
+  type: "tf",
+  stem: "运动兴趣和人的需要有着密切的联系，但其发生不一定以运动需要为基础。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 95,
+  type: "tf",
+  stem: "运动动机的产生主要由运动目标引发。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 96,
+  type: "tf",
+  stem: "一般而言，内部动机对学生参与体育活动的推动力量较大，维持的时间也较长。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 97,
+  type: "tf",
+  stem: "直接动机和间接动机具有相互联系、相互补充的作用。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 98,
+  type: "tf",
+  stem: "批评的效果优于表扬的效果，批评更能提高学生的动机水平。",
+  options: ["对","错"],
+  correctIndex: 1,
+  explanation: "本题说法为“错”。"
+},
+{
+  id: 99,
+  type: "tf",
+  stem: "学生的体育态度受他们对体育活动价值认知的影响。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 100,
+  type: "tf",
+  stem: "体育态度从消极转向积极，这是强度上的转变。",
+  options: ["对","错"],
+  correctIndex: 1,
+  explanation: "本题说法为“错”。"
+},
+{
+  id: 101,
+  type: "tf",
+  stem: "体育态度从较积极转向很积极，这是方向上的转变。",
+  options: ["对","错"],
+  correctIndex: 1,
+  explanation: "本题说法为“错”。"
+},
+{
+  id: 102,
+  type: "tf",
+  stem: "比赛的规模越大，对于运动员来说就越重要，所引起的运动员赛前状态焦虑水平也就越高。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 103,
+  type: "tf",
+  stem: "比赛结果的不确定性越大，给运动员带来的赛前状态焦虑水平升高的可能性就越小。",
+  options: ["对","错"],
+  correctIndex: 1,
+  explanation: "本题说法为“错”。"
+},
+{
+  id: 104,
+  type: "tf",
+  stem: "心境状态可以作为监测运动疲劳的指标。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 105,
+  type: "tf",
+  stem: "赛前心境状态可以预测运动成绩。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 106,
+  type: "tf",
+  stem: "自主学习法有利于培养学生从“学会体育”到“会学体育”。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 107,
+  type: "tf",
+  stem: "探究学习法适用于所有年龄阶段的学生。",
+  options: ["对","错"],
+  correctIndex: 1,
+  explanation: "本题说法为“错”。"
+},
+{
+  id: 108,
+  type: "tf",
+  stem: "学生的起始状态是制约体育教学策略制定的决定性因素。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 109,
+  type: "tf",
+  stem: "体育教学目标是制约体育教学策略制定的重要条件。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 110,
+  type: "tf",
+  stem: "体育课堂心理气氛具有相对的稳定性和变化性的特点。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 111,
+  type: "tf",
+  stem: "和谐型的课堂心理气氛是体育教师为之努力追求的理想状态。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 112,
+  type: "tf",
+  stem: "体育能力具有一般能力的特征，但不是一种特殊的能力。",
+  options: ["对","错"],
+  correctIndex: 1,
+  explanation: "本题说法为“错”。"
+},
+{
+  id: 113,
+  type: "tf",
+  stem: "心理运动能力决定着个体动作反应的速度和准确性。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 114,
+  type: "tf",
+  stem: "心理运动能力测验主要测量受个体肌肉支配的精细动作能力。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 115,
+  type: "tf",
+  stem: "体育团体凝聚力具有动态性。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 116,
+  type: "tf",
+  stem: "适当的团体规模有助于团体凝聚力的发展。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 117,
+  type: "tf",
+  stem: "一般来说，外界压力越大，团体凝聚力越低。",
+  options: ["对","错"],
+  correctIndex: 1,
+  explanation: "本题说法为“错”。"
+},
+{
+  id: 118,
+  type: "tf",
+  stem: "团体凝聚力的策略方法主要有社会测量法和问卷法。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 119,
+  type: "tf",
+  stem: "团体任务吸引力是指每个团体成员就其自身对团体任务的投入程度的感知。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+},
+{
+  id: 120,
+  type: "tf",
+  stem: "个体因素对团体凝聚有影响，其中满意感、运动队凝聚力和成绩之间存在一定关系。",
+  options: ["对","错"],
+  correctIndex: 0,
+  explanation: "本题说法为“对”。"
+}
+];
+
+/* ===================== 逻辑部分 ===================== */
+
+const allowedIds = ["22011001","22011014"];
+
+const taunts = [
+  "这题都能错？今晚先别睡了。",
+  "心理学：我已经尽力往你脑子里钻了。",
+  "错得相当有创意，再来一遍？",
+  "别急着起飞，先把书翻开。",
+  "要不我们先把课本目录背一遍？",
+  "这分数要是上考场……算了不敢想。",
+  "把老师微信删了还来得及。",
+  "体育心理学：你是真的一点不心理。",
+  "你这手速适合抢票，不适合做题。",
+  "错得这么稳，说明你很稳定。"
+];
+
+let state = {
+  studentId: null,
+  currentIndex: 0,
+  answers: [], // {questionId, chosenIndex, correct, time}
+  questionStartTime: null,
+  finished: false
+};
+
+const screenLogin = document.getElementById("screen-login");
+const screenQuiz = document.getElementById("screen-quiz");
+const screenResult = document.getElementById("screen-result");
+const screenReview = document.getElementById("screen-review");
+const progressInner = document.getElementById("progressInner");
+const qIndexLabel = document.getElementById("qIndexLabel");
+const qTypeLabel = document.getElementById("qTypeLabel");
+const qStemEl = document.getElementById("qStem");
+const qOptionsEl = document.getElementById("qOptions");
+const qExplanationEl = document.getElementById("qExplanation");
+const qTimerEl = document.getElementById("qTimer");
+const tauntBubble = document.getElementById("tauntBubble");
+
+function showScreen(id) {
+  [screenLogin, screenQuiz, screenResult, screenReview].forEach(s => {
+    s.classList.toggle("active", s.id === id);
+  });
+}
+
+function updateProgress() {
+  if (!state.finished) {
+    const ratio = (state.currentIndex) / questions.length;
+    progressInner.style.transform = `scaleX(${ratio})`;
+  } else {
+    progressInner.style.transform = "scaleX(1)";
+  }
+}
+
+let timerHandle = null;
+
+function tickTimer() {
+  if (!state.questionStartTime || state.finished) return;
+  const now = performance.now();
+  const elapsed = (now - state.questionStartTime) / 1000;
+  qTimerEl.textContent = elapsed.toFixed(1);
+  timerHandle = requestAnimationFrame(tickTimer);
+}
+
+function stopTimer() {
+  if (!state.questionStartTime) return 0;
+  const now = performance.now();
+  const elapsed = (now - state.questionStartTime) / 1000;
+  state.questionStartTime = null;
+  if (timerHandle) cancelAnimationFrame(timerHandle);
+  return elapsed;
+}
+
+function renderQuestion() {
+  const idx = state.currentIndex;
+  const q = questions[idx];
+  qIndexLabel.textContent = `题目 ${idx+1} / ${questions.length}`;
+  qTypeLabel.textContent = q.type === "single" ? "单选题" : "判断题";
+  qStemEl.textContent = q.stem;
+  qOptionsEl.innerHTML = "";
+  qExplanationEl.style.display = "none";
+  qExplanationEl.textContent = "";
+  tauntBubble.classList.remove("show");
+
+  const letters = ["A","B","C","D","E","F"];
+  q.options.forEach((opt, i) => {
+    const div = document.createElement("div");
+    div.className = "option";
+    div.dataset.index = i;
+    const ind = document.createElement("div");
+    ind.className = "option-indicator";
+    ind.textContent = q.type === "tf" ? (i === 0 ? "对" : "错") : letters[i];
+    const text = document.createElement("div");
+    text.className = "option-text";
+    text.textContent = opt;
+    div.appendChild(ind);
+    div.appendChild(text);
+    div.addEventListener("click", () => handleOptionClick(div, i));
+    qOptionsEl.appendChild(div);
+  });
+
+  state.questionStartTime = performance.now();
+  if (timerHandle) cancelAnimationFrame(timerHandle);
+  timerHandle = requestAnimationFrame(tickTimer);
+  updateProgress();
+}
+
+function lockOptions() {
+  const nodes = qOptionsEl.querySelectorAll(".option");
+  nodes.forEach(n => {
+    n.classList.add("disabled");
+  });
+}
+
+function handleOptionClick(element, chosenIndex) {
+  // 已锁定就不允许反悔
+  if (element.classList.contains("disabled")) return;
+  const q = questions[state.currentIndex];
+  const timeUsed = stopTimer();
+
+  lockOptions();
+
+  const correctIndex = q.correctIndex;
+  const children = qOptionsEl.querySelectorAll(".option");
+  children.forEach((optEl, idx) => {
+    if (idx === correctIndex) {
+      optEl.classList.add("correct");
+    }
+    if (idx === chosenIndex && idx !== correctIndex) {
+      optEl.classList.add("incorrect");
+    }
+  });
+
+  const isCorrect = chosenIndex === correctIndex;
+  state.answers.push({
+    questionId: q.id,
+    stem: q.stem,
+    options: q.options,
+    correctIndex,
+    chosenIndex,
+    correct: isCorrect,
+    explanation: q.explanation,
+    type: q.type,
+    timeUsed
+  });
+
+  qExplanationEl.style.display = "block";
+  qExplanationEl.textContent = q.explanation;
+
+  if (!isCorrect) {
+    const txt = taunts[Math.floor(Math.random() * taunts.length)];
+    tauntBubble.textContent = txt;
+    tauntBubble.classList.add("show");
+    setTimeout(() => tauntBubble.classList.remove("show"), 1500);
+  }
+
+  // 稍微延迟一下，然后点击页面任意处进入下一题
+  setTimeout(() => {
+    screenQuiz.addEventListener("click", nextQuestionOnce, { once: true });
+  }, 250);
+}
+
+function nextQuestionOnce() {
+  tauntBubble.classList.remove("show");
+  if (state.currentIndex < questions.length - 1) {
+    state.currentIndex += 1;
+    renderQuestion();
+  } else {
+    finishQuiz();
+  }
+}
+
+function computeScore() {
+  const total = questions.length;
+  const correct = state.answers.filter(a => a.correct).length;
+  const score = Math.round(correct / total * 100);
+  let comment = "";
+  if (score >= 90) comment = "天才只是见我的门槛";
+  else if (score >= 80) comment = "还行吧，刚好没挂科";
+  else if (score >= 70) comment = "你也就那样吧";
+  else if (score >= 60) comment = "这点分你还活不？";
+  else comment = "今晚别睡了，也别起飞，好好复习";
+  return { total, correct, score, comment };
+}
+
+function finishQuiz() {
+  state.finished = true;
+  updateProgress();
+  const { total, correct, score, comment } = computeScore();
+  document.getElementById("scoreNumber").textContent = score;
+  document.getElementById("scoreDetail").textContent = `正确 ${correct} 题 / 共 ${total} 题`;
+  document.getElementById("scoreComment").textContent = comment;
+  const totalTime = state.answers.reduce((acc, a) => acc + (a.timeUsed || 0), 0);
+  document.getElementById("metaTime").textContent = `总用时：${totalTime.toFixed(1)}s`;
+  const accRate = total === 0 ? 0 : Math.round(correct / total * 100);
+  document.getElementById("metaAccuracy").textContent = `正确率：${accRate}%`;
+  showScreen("screen-result");
+}
+
+function renderReview() {
+  const wrong = state.answers.filter(a => !a.correct);
+  const lead = document.getElementById("reviewLead");
+  const list = document.getElementById("reviewList");
+  list.innerHTML = "";
+  if (wrong.length === 0) {
+    lead.textContent = "本次真猛，一道都没错，系统已经没啥好嘲讽你的了。";
+    return;
+  } else {
+    lead.textContent = `本次共错 ${wrong.length} 题，下面是你的“名场面”。`;
+  }
+  wrong.forEach((a, idx) => {
+    const wrap = document.createElement("div");
+    wrap.style.padding = "10px 0";
+    wrap.style.borderBottom = "1px dashed #e5e7eb";
+    const title = document.createElement("div");
+    title.style.fontSize = "13px";
+    title.style.color = "#6b7280";
+    title.textContent = `错题 ${idx+1}`;
+    const stem = document.createElement("div");
+    stem.style.fontSize = "14px";
+    stem.style.fontWeight = "600";
+    stem.style.margin = "4px 0 4px";
+    stem.textContent = a.stem;
+    const your = document.createElement("div");
+    your.style.fontSize = "13px";
+    your.style.color = "#b91c1c";
+    const yourText = a.chosenIndex != null ? a.options[a.chosenIndex] : "未作答";
+    your.textContent = `你的答案：${yourText}`;
+    const correct = document.createElement("div");
+    correct.style.fontSize = "13px";
+    correct.style.color = "#15803d";
+    correct.textContent = `正确答案：${a.options[a.correctIndex]}`;
+    const expl = document.createElement("div");
+    expl.style.fontSize = "13px";
+    expl.style.color = "#4b5563";
+    expl.style.marginTop = "4px";
+    expl.textContent = a.explanation;
+    wrap.appendChild(title);
+    wrap.appendChild(stem);
+    wrap.appendChild(your);
+    wrap.appendChild(correct);
+    wrap.appendChild(expl);
+    list.appendChild(wrap);
+  });
+}
+
+function exportReport() {
+  const { total, correct, score, comment } = computeScore();
+  const totalTime = state.answers.reduce((acc, a) => acc + (a.timeUsed || 0), 0);
+  let lines = [];
+  lines.push("Juncheng Wu · Motor Learning Lab · 体育心理学测试成绩单");
+  lines.push("学号: " + (state.studentId || ""));
+  lines.push("总题数: " + total);
+  lines.push("答对题数: " + correct);
+  lines.push("得分: " + score);
+  lines.push("评语: " + comment);
+  lines.push("总用时: " + totalTime.toFixed(1) + "s");
+  lines.push("");
+  lines.push("错题明细:");
+  const wrong = state.answers.filter(a => !a.correct);
+  if (wrong.length === 0) {
+    lines.push("本次全部答对，暂无错题。");
+  } else {
+    wrong.forEach((a, idx) => {
+      lines.push(`【错题 ${idx+1}】` + a.stem);
+      const yourText = a.chosenIndex != null ? a.options[a.chosenIndex] : "未作答";
+      lines.push("你的答案: " + yourText);
+      lines.push("正确答案: " + a.options[a.correctIndex]);
+      lines.push("解析: " + a.explanation);
+      lines.push("");
+    });
+  }
+  const blob = new Blob([lines.join("\n")], {type: "text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  const ts = new Date().toISOString().slice(0,19).replace(/[:T]/g,"-");
+  a.download = `sport-psych-quiz-${ts}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* 事件绑定 */
+document.getElementById("startBtn").addEventListener("click", () => {
+  const id = document.getElementById("studentId").value.trim();
+  const err = document.getElementById("loginError");
+  if (!allowedIds.includes(id)) {
+    err.style.display = "block";
+    err.textContent = "学号无效：本次测试仅限 22011001 / 22011014 使用。";
+    return;
+  }
+  err.style.display = "none";
+  state.studentId = id;
+  state.currentIndex = 0;
+  state.answers = [];
+  state.finished = false;
+  showScreen("screen-quiz");
+  renderQuestion();
+});
+
+document.getElementById("restartBtn").addEventListener("click", () => {
+  state = {
+    studentId: null,
+    currentIndex: 0,
+    answers: [],
+    questionStartTime: null,
+    finished: false
+  };
+  progressInner.style.transform = "scaleX(0)";
+  showScreen("screen-login");
+});
+
+document.getElementById("reviewBtn").addEventListener("click", () => {
+  renderReview();
+  showScreen("screen-review");
+});
+
+document.getElementById("backToResultBtn").addEventListener("click", () => {
+  showScreen("screen-result");
+});
+
+document.getElementById("exportBtn").addEventListener("click", exportReport);
+</script>
+</body>
+</html>
